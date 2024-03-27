@@ -1,6 +1,5 @@
 from sqlalchemy import create_engine, engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import DeclarativeBase, sessionmaker
 from os import environ
 
 connection_url = engine.url.URL.create(
@@ -13,7 +12,14 @@ connection_url = engine.url.URL.create(
 )
 engine = create_engine(connection_url)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
+
+class Base(DeclarativeBase):
+    pass
+
+
+def setup_database():
+    Base.metadata.create_all(bind=engine)
+
 
 def get_db():
     db = SessionLocal()
@@ -23,6 +29,3 @@ def get_db():
     finally:
         db.close()
 
-
-def setup_database():
-    Base.metadata.create_all(bind=engine)
