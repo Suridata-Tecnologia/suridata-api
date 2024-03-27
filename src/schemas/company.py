@@ -13,5 +13,5 @@ class Company(BaseModel):
     params: Optional[str] = Field(alias='dashboard_param')
     product: Optional[str] = Field(alias='suridata_product')
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
