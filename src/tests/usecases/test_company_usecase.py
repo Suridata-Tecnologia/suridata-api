@@ -32,6 +32,6 @@ def should_return_list_of_companies_when_call_method():
 
     CompanyRepository.find_all = Mock(return_value=mock_companies)
 
-    result = CompanyUseCase.list_companies(mock_db)
+    result = CompanyUseCase.list_all(mock_db)
 
     assert result == mock_companies
