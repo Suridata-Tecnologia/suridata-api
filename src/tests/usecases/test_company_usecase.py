@@ -6,7 +6,7 @@ from src.repositories.company import CompanyRepository
 from src.usecases.company import CompanyUseCase
 
 
-def should_return_list_of_companies_when_call_method():
+def test_find_all():
     mock_db = MagicMock(spec=Session)
     mock_company_1 = Company(
         id=1,

@@ -3,7 +3,12 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 def setup_server() -> FastAPI:
-    app = FastAPI(root_path='/api/v1')
+    config = {
+        'title': 'Suridata API.v1',
+        'redoc_url': '/docs',
+        'docs_url': '/docss'
+    }
+    app = FastAPI(root_path='/api/v1', **config)
 
     app.add_middleware(
         CORSMiddleware,
