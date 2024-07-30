@@ -6,4 +6,3 @@ app = setup_server()
 setup_routes(app)
 setup_database()
 
-
