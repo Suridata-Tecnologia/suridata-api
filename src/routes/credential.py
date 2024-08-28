@@ -12,3 +12,4 @@ router = APIRouter(prefix='/credentials')
 @router.get('/', response_model=List[Credential])
 def list(db: Session = Depends(get_db)) -> List[Credential]:
     return CredentialUseCase.list_all(db)
+
