@@ -15,14 +15,15 @@ class CredentialUseCase:
     def list_all(db: Session) -> List[CredentialOut]:
         return CredentialRepository.find_all(db)
     
+
     @staticmethod
-    def create_credential(db: Session, credential: CredentialIn) -> CredentialOut:
+    def create(db: Session, credential: CredentialIn, user_id: int) -> CredentialOut:
         company = CompanyRepository.find_by_id(db, company_id=credential.company_id)
 
         if not company:
             raise CompanyNotFound
         
-        is_duplicate_credential = CredentialRepository.is_duplicated(
+        credential_in_db = CredentialRepository.exists(
             db, 
             credential.company_id, 
             credential.username, 
@@ -30,10 +31,17 @@ class CredentialUseCase:
             credential.complement
         )
 
-        if is_duplicate_credential:
+        if credential_in_db:
             raise DuplicatedCredential
         
-        teste = CredentialRepository.create_or_update(db, credential.model_dump())
+        new_credential = {**credential.model_dump(), "user_id":user_id}
+        new_credential = CredentialRepository.create_or_update(db, new_credential)
+
+        return new_credential
+    
+
+    @staticmethod
+    def delete(db: Session, user_id: int, id: int) -> None:
+        credential = CredentialRepository.delete(db, id)
 
         
-        return teste

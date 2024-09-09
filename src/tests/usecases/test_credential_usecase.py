@@ -2,11 +2,13 @@ from unittest.mock import MagicMock, Mock
 from sqlalchemy.orm import Session
 
 from src.schemas.credential import Credential
+from src.schemas.company import Company
 from src.repositories.credential import CredentialRepository
 from src.usecases.credential import CredentialUseCase
+from src.repositories.company import CompanyRepository
 
 
-def test_find_all():
+def test_list_all():
     mock_db = MagicMock(spec=Session)
     mock_credential_1 = {
         'id': 1,
@@ -48,6 +50,30 @@ def test_find_all():
     mock_credentials = [mock_credential_1, mock_credential_2]
 
     CredentialRepository.find_all = Mock(return_value=mock_credentials)
+
+    result = CredentialUseCase.list_all(mock_db)
+
+    assert result == mock_credentials
+
+
+def should_raise_error_on_company_not_found():
+    mock_db = MagicMock(spec=Session)
+
+    mock_company = {
+        'id': 1,
+        'status': 1,
+        'pretty_name': 'Empresateste',
+        'name': 'Teste',
+        'drive_path': 'TESTE_AMIL',
+        'policy': '12345',
+        'suridata_product': 'Controle',
+        'dashboard_param': 'Teste Amil'
+    }
+    
+    mock_company = Company(**mock_company)
+
+    CompanyRepository.find_by_id = Mock(return_value=mock_company)
+    
 
     result = CredentialUseCase.list_all(mock_db)
 

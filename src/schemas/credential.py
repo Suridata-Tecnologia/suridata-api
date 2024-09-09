@@ -20,7 +20,6 @@ class CredentialOut(BaseModel):
     complement: Optional[str]
     status: str
     operations: List[OperationsEnum]
-    company: Optional[Company]
     user_id: int
 
     @field_validator('status', mode='before')
@@ -29,8 +28,8 @@ class CredentialOut(BaseModel):
 
     @field_validator('operations', mode='before')
     def parse_operations(cls, value):
-        return [OperationsEnum(i.lower()) for i in value[1].split(',')]
-
+        return [OperationsEnum(i) for i in value.split(',')]
+    
     class ConfigDict:
         from_attributes = True
 
@@ -38,7 +37,16 @@ class CredentialOut(BaseModel):
 class CredentialIn(BaseModel):
     username: str
     password: str
-    complement: Optional[str]
-    status: str
+    complement: Optional[str] = None
+    access_type: str = 'suridata'
+    status: int
     operations: List[OperationsEnum]
     company_id: int
+
+    @field_validator('operations', mode='after')
+    def join_operations(cls, value):
+        return ','.join(value)
+
+
+    class ConfigDict:
+        from_attributes = True 

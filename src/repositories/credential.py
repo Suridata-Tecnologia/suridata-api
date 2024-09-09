@@ -9,8 +9,9 @@ class CredentialRepository:
     def find_all(db: Session) -> list[Credential]:
         return db.query(Credential).all()
     
+
     @staticmethod
-    def is_duplicated(
+    def exists(
         db: Session, 
         company_id: int, 
         username: str, 
@@ -26,11 +27,28 @@ class CredentialRepository:
 
         return credential is not None
     
+
     @staticmethod
     def create_or_update(db: Session, credential: dict) -> CredentialOut:
-        credential_unit = Credential(**credential)
-        import ipdb; ipdb.set_trace()
-        db.add(credential_unit)
+        credential = Credential(**credential)
+
+        if credential.id:
+            db.merge(credential)
+        else:
+            db.add(credential)
         
         db.commit()
+        return credential
     
+
+    @staticmethod
+    def delete(db: Session, id: int) -> None:
+        credential = db.query(Credential).filter(Credential.id == id)
+        import ipdb; ipdb.set_trace()
+        # if credential.id:
+        #     db.merge(credential)
+        # else:
+        #     db.add(credential)
+        
+        # db.commit()
+        return credential
