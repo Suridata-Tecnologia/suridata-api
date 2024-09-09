@@ -16,4 +16,3 @@ class Company(Base):
     suridata_product = mapped_column(String(100))
     dashboard_param  = mapped_column(String(100))
 
-    credentials = relationship('Credential', back_populates='company')

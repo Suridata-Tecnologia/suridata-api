@@ -7,7 +7,7 @@ connection_url = engine.url.URL.create(
     username   = environ.get('DB_USER', 'root'),
     password   = environ.get('DB_PASS', ''),
     host       = environ.get('DB_HOST', '127.0.0.1'),
-    database   = environ.get('DB_NAME', 'suridata_portal'),
+    database   = environ.get('DB_NAME', 'suridata_portal_hom'),
     port       = 3306,
 )
 engine = create_engine(connection_url)
