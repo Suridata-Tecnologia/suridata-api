@@ -29,3 +29,9 @@ class Users(BaseModel):
 
     class ConfigDict:
         from_attribute: True
+
+
+class UserBase(BaseModel):
+    username: str
+    password: str
+    email: str
